@@ -2,6 +2,11 @@
     font-family: "lores-12", sans-serif !important;
 }
 
+body {
+    position: relative !important;
+    min-height: 100vh !important;
+}
+
 /*-------------- BACKGROUND ON COMPONENT ---------------------*/
 
 #welcome {
