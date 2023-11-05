@@ -1,6 +1,6 @@
 const button = document.querySelector('#wooden-button');
 
 button.addEventListener('click', function() {
-    window.location.replace('./play.html')
+    window.location.replace('/pages/play')
 });
 
