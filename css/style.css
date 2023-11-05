@@ -1,0 +1,251 @@
+* {
+    font-family: "lores-12", sans-serif !important;
+}
+
+/*-------------- BACKGROUND ON COMPONENT ---------------------*/
+
+#welcome {
+    background-image: url("../assets/EXPLORATIUM\ welcome\ msg.png");
+    background-size: cover;
+    background-position: center;
+}
+
+#main-bg {
+    background-image: url("../assets/main\ bg.png");
+    background-size: cover;
+    background-position: center;
+}
+
+#play-bg {
+    background-image: url("../assets/exploratium.png");
+    background-size: cover;
+    background-position: center;
+}
+
+#wooden-button {
+    background-image: url("../assets/wooden\ board.png");
+    background-size: cover;
+    background-position: center;
+}
+
+#wooden-button-start {
+    background-image: url("../assets/wooden\ board.png");
+    background-size: cover;
+    background-position: center;
+}
+footer {
+    background-image: url("../assets/wooden\ board.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#board {
+    background-image: url("../assets/bigwood.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+i {
+    color: white;
+    height: 40px;
+    width: 40px;
+    font-weight: 900;
+    
+}
+
+/* SCOREBOARD */
+.tab {
+    flex-basis: 25%; 
+    border-top-width: 2px; 
+    border-right-width: 2px; 
+    border-left-width: 2px; 
+    border-color: #ffffff; 
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); 
+}
+
+.tab:hover {
+    flex-basis: 33.333333%; 
+    color: #ffffff; 
+ }
+
+
+/* --------------CHARACTER-------------------- */
+
+/* SWORDMAN */
+#swordman-walking {
+    background-image: url("../assets/swordman/walk.png");
+    z-index: 10;
+    background-size: cover;
+    width: 256px;
+    height: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: -150px;
+    animation: walk 1s steps(8) infinite, forward 30s linear infinite;
+}
+
+#swordman-idle{
+    background-image: url("../assets/swordman/Idle.png") ;
+    background-size: cover;
+    background-position: left;
+    width: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: 0%;
+    height: 256px;
+    animation: stand 1s steps(8) infinite;  
+}
+
+/* ARCHER */
+#archer-idle {
+    background-image: url("../assets/archer/Idle.png") ;
+    background-size: cover;
+    background-position: left;
+    width: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: 4%;
+    height: 256px;
+    animation: stand 1s steps(8) infinite;  
+}
+
+#archer-walk {
+    background-image: url("../assets/archer/Walk.png") ;
+    background-size: cover;
+    background-position: left;
+    width: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: -150px;
+    height: 256px;
+    animation: walk 1s steps(8) infinite, forward 35s linear infinite;
+}
+
+/* WIZARD */
+#wizard-idle {
+    background-image: url("../assets/wizard/Idle.png");
+    background-size: cover;
+    background-position: left;
+    width: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: 0%;
+    height: 256px;
+    animation: stand 1s steps(8) infinite;
+}
+
+#wizard-walk {
+    background-image: url("../assets/wizard/Walk.png");
+    background-size: cover;
+    background-position: left;
+    width: 256px;
+    position: absolute;
+    bottom: 78px;
+    left: -150px;
+    height: 256px;
+    animation: walk 1s steps(8) infinite, forward 40s linear infinite;
+}
+
+/* BUBBLE DIALOG */
+#bubble-dialog1 {
+    background-image: url("../assets/bubble\ dialog/dialog1.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    padding-top: 10px;
+    padding-inline: 20px;
+    bottom: 220px;
+    left: 130px;
+    width: 230px;
+    height: 130px;
+    animation: fadein 3s ease-in-out, 
+                blinking 1s linear 10s 3;
+}
+
+
+/* DIALOG ANIMATION */
+@keyframes fadein {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blinking {
+    50% {
+        opacity: 0.5;
+    }
+    80% {
+        opacity: 0.8;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+/* CHARACTER ANIMATION */
+@keyframes stand {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -2048px;
+    }
+}
+
+@keyframes forward {
+    0% {
+        left: -190px ;
+    }
+    100% {
+        left: 100%;
+    }
+} 
+
+@keyframes walk {
+    from {
+        background-position: 0px;
+    }
+    to {
+        background-position: -2048px;
+    }
+}
+
+
+/* ICON */
+.fa-brands, .fab {
+    font-family: "Font Awesome 6 Brands" !important;
+}
+
+
+
+/* HELP PAGE */
+section {
+    margin-block: 14px;
+}
+
+h2 {
+    margin-block: 8px;
+}
