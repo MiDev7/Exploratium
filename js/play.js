@@ -11,6 +11,7 @@ const footer = document.querySelector('footer');
 
 let mousePos = { x: undefined, y: undefined };
 button.addEventListener('click', function() {
+    console.log('button clicked')
     header.style.display = 'none';
     footer.style.display = 'none';
 });
