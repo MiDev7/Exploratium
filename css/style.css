@@ -250,3 +250,8 @@ section {
 h2 {
     margin-block: 8px;
 }
+
+
+#game {
+    border: #fff solid 2px;
+}
