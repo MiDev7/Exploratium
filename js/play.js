@@ -8,6 +8,7 @@
 import { Player } from "./classes/player.js";
 import { Platform } from "./classes/platform.js";
 import { GenericObject } from "./classes/background.js";
+import Players from "./constants/charaters.js";
 // !---------------DOM ELEMENTS----------------
 const canvas = document.querySelector("#game");
 const hero = document.querySelector("#play-bg");
@@ -59,12 +60,9 @@ async function main() {
   // * Objects
   let Objects = [];
   // * Player
-  let player = new Player(gravity, canvas, context, 100, 100, "red");
+  let player = new Player(gravity, canvas, context, Players.Archer, 100, 100);
 
-  /**
-   * Animates the game by clearing the canvas and updating the player.
-   */
-
+  //* Animates the game by clearing the canvas and updating the player.
   async function reset() {
     distance = 0;
 
@@ -157,7 +155,7 @@ async function main() {
       ),
     ];
     // * Player
-    player = new Player(gravity, canvas, context, 100, 100);
+    player = new Player(gravity, canvas, context, Players.Archer, 100, 100);
   }
   // !----------------- ANIMATION LOOP -----------------
   function animate() {
@@ -170,6 +168,20 @@ async function main() {
     platforms.forEach((platform) => {
       platform.draw();
     });
+
+    // !----------------- PLAYER MOVEMENT -----------------
+
+    if (isPressed.left) {
+      player.state = "walk";
+      player.direction = "left";
+    } else if (isPressed.right) {
+      player.state = "walk";
+      player.direction = "right";
+    } else {
+      player.state = "idle";
+    }
+
+    // !----------------- PLAYER MOVEMENT PARALLAX  -----------------
     if (
       (isPressed.left && player.position.x > 100) ||
       (isPressed.left && distance === 0 && player.position.x > 0)
@@ -195,6 +207,7 @@ async function main() {
         Objects[5].position.x -= 5;
       }
     }
+
     // !----------------- COLLISION DETECTION -----------------
     platforms.forEach((platform) => {
       if (
