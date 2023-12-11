@@ -1,4 +1,4 @@
-export class Player {
+export default class Player {
   constructor(gravity, canvas, ctx, image, x, y) {
     this.ctx = ctx;
     this.canvas = canvas;
@@ -29,7 +29,7 @@ export class Player {
       this.frameRate = 3;
     } else if (this.state === "idle" && this.direction === "left") {
       this.sprite = this.image.idleLeft;
-      this.frameRate = 5;
+      this.frameRate = 10;
     } else if (this.state === "walk" && this.direction === "right") {
       this.sprite = this.image.walk;
     } else if (this.state === "walk" && this.direction === "left") {

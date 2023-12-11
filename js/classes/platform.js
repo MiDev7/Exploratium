@@ -1,4 +1,4 @@
-export class Platform {
+export default class Platform {
   constructor(canvas, ctx, image, x, y, width, height) {
     this.canvas = canvas;
     this.ctx = ctx;

@@ -1,3 +1,4 @@
 *.pdf
 *.DS_Store
 ./report
+./assets/PNG

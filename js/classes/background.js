@@ -1,4 +1,4 @@
-export class GenericObject {
+export default class GenericObject {
   constructor(
     canvas,
     ctx,
