@@ -16,6 +16,8 @@ import {
   collisionMinionTop,
   collisionMinionSide,
   collisionPlatformCircle,
+  blockCollision,
+  blockCollisionSide,
 } from "./utils/collisionDetection.js";
 
 // !---------------DOM ELEMENTS----------------
@@ -40,7 +42,7 @@ const Players = {
     idleLeft: loadImage("../assets/archer/IdleLeft.png"),
     walkLeft: loadImage("../assets/archer/WalkLeft.png"),
     jumpLeft: loadImage("../assets/archer/JumpLeft.png"),
-    jumpRight: loadImage("../assets/archer/JumpRight.png"),
+    jump: loadImage("../assets/archer/JumpRight.png"),
   },
   Wizard: {
     idle: loadImage("../assets/wizard/Idle.png"),
@@ -54,16 +56,20 @@ const Players = {
 
 const enemy = loadImage("../assets/SlimeMediumBlue.png");
 
+// !---------------MAIN FUNCTION----------------
 async function main() {
   // !----------------- GAME LOGIC -----------------
   let isPressed = { left: false, right: false };
+  let lastKeyPressed = null;
   let isJumping = false;
-  const gravity = 5;
+  const gravity = 4;
   let distance = 0;
 
-  const playerSpeed = 10;
+  const playerSpeed = 7;
   // !----------------- OBJECTS -----------------
   // * Platforms
+  const smallBlock = await loadImageAsync("../assets/BrownWoodSmall.png");
+  const largeBlock = await loadImageAsync("../assets/BrownWoodLarge.png");
   const platformImage1 = await loadImageAsync("../assets/lgPlatform.png");
   const platformImage2 = await loadImageAsync("../assets/mdPlatform.png");
 
@@ -113,6 +119,7 @@ async function main() {
         903 * 4.7,
         canvas.height - 111
       ),
+      new Platform(canvas, context, largeBlock, 800, 300, true),
     ];
     // * Objects
     Objects = [
@@ -189,7 +196,8 @@ async function main() {
       object.draw();
     });
     platforms.forEach((platform) => {
-      platform.draw();
+      platform.update();
+      platform.velocity.x = 0;
     });
     minions.forEach((minion, index) => {
       minion.update();
@@ -222,13 +230,13 @@ async function main() {
         reset();
       }
     });
-
+    console.log(player.position.y);
     // !----------------- PLAYER MOVEMENT -----------------
-
-    if (isPressed.left) {
+    // TODO: Rework on the jumping sprite of character
+    if (isPressed.left && lastKeyPressed === "Left") {
       player.state = "walk";
       player.direction = "left";
-    } else if (isPressed.right) {
+    } else if (isPressed.right && lastKeyPressed === "Right") {
       player.state = "walk";
       player.direction = "right";
     } else {
@@ -240,14 +248,14 @@ async function main() {
     if (isPressed.left && player.position.x > 55) {
       player.velocity.x = -playerSpeed;
     } else if (isPressed.right && player.position.x + player.width < 500) {
-      player.velocity.x = playerSpeed;
+      player.velocity.x = +playerSpeed;
     } else {
       player.velocity.x = 0;
       if (isPressed.left && distance > 0) {
         distance -= playerSpeed;
 
         platforms.forEach((platform) => {
-          platform.position.x += playerSpeed;
+          platform.velocity.x = playerSpeed;
         });
 
         minions.forEach((minion) => {
@@ -263,7 +271,7 @@ async function main() {
         distance += playerSpeed;
 
         platforms.forEach((platform) => {
-          platform.position.x -= playerSpeed;
+          platform.velocity.x = -playerSpeed;
         });
 
         minions.forEach((minion) => {
@@ -285,6 +293,13 @@ async function main() {
         isJumping = false;
       }
 
+      if (platform.block && blockCollision(player, platform)) {
+        player.velocity.y = -player.velocity.y;
+      }
+
+      if (platform.block && blockCollisionSide(player, platform)) {
+        player.velocity.x = 0;
+      }
       particles.forEach((particle, index) => {
         if (collisionPlatformCircle(particle, platform)) {
           particle.velocity.y = -particle.velocity.y * 0.9;
@@ -307,7 +322,7 @@ async function main() {
       });
     });
 
-    particles.forEach((particle, index) => {
+    particles.forEach((particle) => {
       particle.update();
     });
     player.update();
@@ -328,21 +343,30 @@ async function main() {
       case "ArrowUp":
         if (!isJumping) {
           player.velocity.y -= 60;
+          player.state = "jump";
           isJumping = true;
         }
         break;
       case "ArrowLeft": //!hello deepika was hereeee <3
         isPressed.left = true;
+        lastKeyPressed = "Left";
         break;
 
       case "ArrowRight":
         isPressed.right = true;
+        lastKeyPressed = "Right";
         break;
     }
   });
 
   addEventListener("keyup", ({ key }) => {
     switch (key) {
+      case "ArrowUp":
+        if (player.velocity.y === 0) {
+          isJumping = false;
+        }
+
+        break;
       case "ArrowLeft":
         isPressed.left = false;
         player.velocity.x = 0;

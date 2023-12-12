@@ -7,8 +7,10 @@ export default class Player {
       x,
       y,
     };
-    this.height = 150;
-    this.width = 150;
+
+    this.scale = 1.2;
+    this.height = 150 * this.scale;
+    this.width = 150 * this.scale;
     this.image = image;
     this.velocity = {
       x: 0,
@@ -21,19 +23,38 @@ export default class Player {
     this.state = "idle";
     this.direction = "right";
     this.sprite;
+    this.frameAmount = 4;
   }
 
   draw() {
+    this.ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
+    this.ctx.fillRect(
+      this.position.x,
+      this.position.y,
+      this.width,
+      this.height
+    );
     if (this.state === "idle" && this.direction === "right") {
       this.sprite = this.image.idle;
       this.frameRate = 3;
+      this.frameAmount = 3;
     } else if (this.state === "idle" && this.direction === "left") {
       this.sprite = this.image.idleLeft;
-      this.frameRate = 10;
+      this.frameAmount = 3;
     } else if (this.state === "walk" && this.direction === "right") {
       this.sprite = this.image.walk;
+      this.frameRate = 5;
     } else if (this.state === "walk" && this.direction === "left") {
       this.sprite = this.image.walkLeft;
+      this.frameRate = 5;
+    } else if (this.state === "jump" && this.direction === "right") {
+      this.sprite = this.image.jump;
+      this.frameRate = 20;
+      this.frameAmount = 9;
+    } else if (this.state === "jump" && this.direction === "left") {
+      this.sprite = this.image.jumpLeft;
+      this.frameRate = 20;
+      this.frameAmount = 9;
     }
     this.ctx.drawImage(
       this.sprite,
@@ -54,13 +75,15 @@ export default class Player {
     if (this.frameCount >= this.frameDelay) {
       this.frameCount = 0;
       this.frames++;
-      if (this.frames > 5) {
+      if (this.frames > this.frameAmount) {
         this.frames = 0;
       }
     }
     this.draw();
     this.position.y += this.velocity.y;
     this.position.x += this.velocity.x;
-    this.velocity.y += this.gravity;
+    if (this.position.y + this.height + this.velocity.y <= this.canvas.height) {
+      this.velocity.y += this.gravity;
+    }
   }
 }
