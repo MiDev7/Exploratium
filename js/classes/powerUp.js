@@ -1,13 +1,12 @@
-export default class MiTrash {
+export default class PowerUp {
   constructor(
     canvas,
     ctx,
-    gravity,
+    gravity = 0,
     x,
     y,
     image,
-    velocity,
-    distance = { limit: 50, traveled: 0 }
+    velocity = { x: 0, y: 0 }
   ) {
     this.canvas = canvas;
     this.ctx = ctx;
@@ -17,15 +16,15 @@ export default class MiTrash {
       x,
       y,
     };
-
     this.velocity = {
       x: velocity.x,
       y: velocity.y,
     };
+    this.scale = 1;
+    this.width = 64 * this.scale;
+    this.height = 64 * this.scale;
 
-    this.distance = distance;
-    this.width = 80;
-    this.height = 55;
+    // ! Animation settings
     this.frames = 0;
     this.frameRate = 3;
     this.frameDelay; //* Calculate the delay for the desired frame rate
@@ -36,14 +35,14 @@ export default class MiTrash {
   draw() {
     this.ctx.drawImage(
       this.image,
-      32 * this.frames,
+      64 * this.frames,
       0,
-      32,
-      21,
+      64,
+      64,
       this.position.x,
       this.position.y,
-      this.width * 1.5,
-      this.height * 1.5
+      this.width,
+      this.height
     );
   }
 
@@ -61,15 +60,7 @@ export default class MiTrash {
     this.position.y += this.velocity.y;
     this.position.x += this.velocity.x;
     if (this.position.y + this.height + this.velocity.y <= this.canvas.height) {
-      this.velocity.y += this.gravity;
-    }
-
-    // walk the goomba back and forth
-    this.distance.traveled += Math.abs(this.velocity.x);
-
-    if (this.distance.traveled > this.distance.limit) {
-      this.distance.traveled = 0;
-      this.velocity.x = -this.velocity.x;
+      this.velocity.y += this.gravity * 0.2;
     }
   }
 }

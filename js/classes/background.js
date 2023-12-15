@@ -18,6 +18,8 @@ export default class GenericObject {
     this.image = image;
     this.width = width;
     this.height = height;
+
+    this.velocityX = 0;
   }
 
   draw() {
@@ -28,5 +30,10 @@ export default class GenericObject {
       this.width,
       this.height
     );
+  }
+
+  update() {
+    this.draw();
+    this.position.x += this.velocityX;
   }
 }
