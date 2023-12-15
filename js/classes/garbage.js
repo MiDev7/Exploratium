@@ -1,4 +1,18 @@
+/**
+ * Represents a Garbage object.
+ * @class
+ */
 export default class Garbage {
+  /**
+   * Creates a new Garbage object.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context.
+   * @param {number} gravity - The gravity value.
+   * @param {number} x - The initial x position.
+   * @param {number} y - The initial y position.
+   * @param {HTMLImageElement} image - The image of the garbage.
+   */
   constructor(canvas, ctx, gravity, x, y, image) {
     this.canvas = canvas;
     this.ctx = ctx;
@@ -18,6 +32,9 @@ export default class Garbage {
     };
   }
 
+  /**
+   * Draws the garbage on the canvas.
+   */
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -32,6 +49,9 @@ export default class Garbage {
     );
   }
 
+  /**
+   * Updates the position of the garbage.
+   */
   update() {
     this.draw();
     this.position.x += this.velocity.x;

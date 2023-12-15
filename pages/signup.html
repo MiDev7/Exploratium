@@ -12,21 +12,34 @@
     <title>Exploratium | Sign Up</title>
 </head>
 <body>
+    <!-- FILEPATH: /Users/midev/Local/Game Website/pages/signup.html -->
+    <!--
+        This code represents the navigation bar section of the signup page.
+        It includes a header element with a navigation bar inside.
+        The navigation bar consists of a list of links to different pages of the website.
+        It also includes a "Login" button that redirects to the homepage.
+    -->
     <header class="decoration-white flex justify-center items-center px-12 py-2 static" id="navigation-bar">
         <nav class="bg-black/25 w-full h-12 border font-bold border-white rounded-full flex justify-center items-center drop-shadow-lg md:text-lg text-md">
-            <ul class="inline-flex text-white uppercase flex-2 md:w-[40%] sm:w[25%] justify-around ">
+            <ul class="inline-flex text-white uppercase flex-2 md:w-[40%] sm:w[25%] justify-around">
                 <li class="hover:text-yellow-400"><a href="../pages/home.html">Home</a></li>
                 <li class="hover:text-yellow-400"><a href="../pages/play.html">Play</a></li>
                 <li class="hover:text-yellow-400"><a href="../pages/scoreboard.html">Scoreboard</a></li>
                 <li class="hover:text-yellow-400"><a href="../pages/help.html">Help</a></li>
             </ul>
             <a href="../index.html">
-                <div class=" flex flex-1 w-48 h-full bg-yellow-400 absolute rounded-r-full top-0 right-0 justify-center items-center">
-                    <p class="uppercase text-white ">Login</p>
+                <div class="flex flex-1 w-48 h-full bg-yellow-400 absolute rounded-r-full top-0 right-0 justify-center items-center">
+                    <p class="uppercase text-white">Login</p>
                 </div>
             </a>
         </nav>
     </header>
+    <!-- FILEPATH: /Users/midev/Local/Game Website/pages/signup.html -->
+    <!-- 
+        This HTML code represents a sign-up form for a game website.
+        It includes input fields for the user's full name, date of birth, username, email, password, and confirm password.
+        The form also includes a submit button for signing up.
+    -->
     <div class="flex justify-center items-center mx-auto absolute top-0 left-0 z-[-1] border-2 border-black w-full h-[100vh]" id="main-bg">
         <div class='h-[75%] md:w-[75%] w-full drop-shadow-md hover:drop-shadow-xl rounded-xl flex justify-center items-center' id="board">
             <div class="w-[90%] h-[95%] bg-slate-950/25  rounded-xl flex items-center justify-center flex-col">
@@ -72,7 +85,7 @@
                             </label>
                             <div class="flex justify-start items-center">
                                 <input class="appearance-none block w-full bg-white text-gray-700 border border-gray-200 rounded-full py-3 px-4 mb-1 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" required id="password" type="password" placeholder="Enter your password">
-                            <p id="error-password" class="text-white rounded-full px-2 my-3 top-[28%] absolute left-[490px]"></p>
+                            <p id="error-password" class="text-white rounded px-2 my-3 w-50 top-[20%] absolute left-[600px]"></p>
                             </div>
                             
                         </div>

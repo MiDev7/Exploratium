@@ -40,10 +40,10 @@ const currentUser = sessionStorage.getItem("currentUser");
 
 let currentUserScore = {
   user: currentUser,
-  score1: "",
-  time1: 10000000000000,
-  score2: "",
-  time2: 10000000000000,
+  score1: 0,
+  time1: 0,
+  score2: 0,
+  time2: 0,
 };
 
 let scores = [];
@@ -102,9 +102,10 @@ function compareScore(currentUserScore) {
   const storedScore = localStorage.getItem("scores");
   const parsedScore = storedScore ? JSON.parse(storedScore) : [];
 
-  console.log(currentUserScore);
-  const existingScore = parsedScore.find((score) => score.user === currentUser);
-  console.log(existingScore);
+  console.log(parsedScore);
+  const existingScore = parsedScore.find(
+    (score) => score.user === currentUserScore.user
+  );
   if (existingScore) {
     if (
       currentUserScore.score1 > existingScore.score1 ||
@@ -116,8 +117,8 @@ function compareScore(currentUserScore) {
       return true;
     }
   } else {
-    scores.push(currentUserScore);
-    localStorage.setItem("scores", JSON.stringify(scores));
+    parsedScore.push(currentUserScore);
+    localStorage.setItem("scores", JSON.stringify(parsedScore));
     return true;
   }
 
@@ -136,9 +137,12 @@ function compareScore(currentUserScore) {
  * @param {number} currentUserScore.time2 - The time of the second score for the current user.
  */
 function updateScore(currentUserScore) {
-  if (compareScore(currentUserScore)) {
+  const isExisting = compareScore(currentUserScore);
+  if (isExisting) {
     const storedScore = localStorage.getItem("scores");
     const scores = storedScore ? JSON.parse(storedScore) : [];
+
+    console.log(scores);
 
     const updatedScores = scores.map((score) => {
       if (score.user === currentUserScore.user) {
@@ -168,7 +172,7 @@ async function main() {
   const gravity = 4;
   let distance = 0;
 
-  const playerSpeed = 50;
+  const playerSpeed = 10;
   // !----------------- OBJECTS -----------------
   // * Platforms
 
@@ -2086,11 +2090,11 @@ async function main() {
 
     switch (key) {
       case "ArrowUp":
-        // if (!isJumping) {
-        player.velocity.y -= 60;
-        player.state = "jump";
-        isJumping = true;
-        // }
+        if (!isJumping) {
+          player.velocity.y -= 60;
+          player.state = "jump";
+          isJumping = true;
+        }
         break;
       case "ArrowLeft": //!hello deepika was hereeee <3
         isPressed.left = true;
@@ -2141,17 +2145,21 @@ async function main() {
 let mousePos = { x: undefined, y: undefined };
 
 // Button click event
-button.addEventListener("click", function () {
-  header.style.display = "none";
-  footer.style.display = "none";
-  hero.style.display = "none";
-  document.body.style.height = "100vh";
-  document.body.style.display = "flex";
-  document.body.style.justifyContent = "center";
-  document.body.style.alignItems = "center";
-  canvas.style.display = "block";
-  main();
-});
+
+if (currentUser) {
+  button.addEventListener("click", function () {
+    header.style.display = "none";
+    footer.style.display = "none";
+    hero.style.display = "none";
+    document.body.style.height = "100vh";
+    document.body.style.display = "flex";
+    document.body.style.justifyContent = "center";
+    document.body.style.alignItems = "center";
+    canvas.style.display = "block";
+    document.body.style.backgroundImage = "url('../assets/exploratium.png')";
+    main();
+  });
+}
 
 // Mouse move event
 window.addEventListener("mousemove", (event) => {
@@ -2167,6 +2175,5 @@ window.addEventListener("mousemove", (event) => {
     canvas.style.display = "none";
     document.body.style.height = "";
     document.body.style.display = "block";
-    document.body.style.backgroundColor = "";
   }
 });

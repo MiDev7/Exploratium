@@ -1,4 +1,23 @@
+/**
+ * Represents a particle in a canvas.
+ * @class
+ */
 export default class Particle {
+  /**
+   * Creates a new Particle object.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context of the canvas.
+   * @param {number} gravity - The gravity value for the particle.
+   * @param {number} x - The x-coordinate of the particle's initial position.
+   * @param {number} y - The y-coordinate of the particle's initial position.
+   * @param {Object} velocity - The velocity of the particle.
+   * @param {number} velocity.x - The x-component of the particle's velocity.
+   * @param {number} velocity.y - The y-component of the particle's velocity.
+   * @param {number} radius - The radius of the particle.
+   * @param {string} [colour="#265c42"] - The color of the particle.
+   * @param {boolean} [fades=false] - Indicates whether the particle fades over time.
+   */
   constructor(
     canvas,
     ctx,
@@ -28,6 +47,9 @@ export default class Particle {
     this.opacity = 1;
   }
 
+  /**
+   * Draws the particle on the canvas.
+   */
   draw() {
     this.ctx.save();
     this.ctx.globalAlpha = this.opacity;
@@ -41,6 +63,9 @@ export default class Particle {
     this.ctx.restore();
   }
 
+  /**
+   * Updates the particle's position and properties.
+   */
   update() {
     this.draw();
     this.position.y += this.velocity.y;

@@ -1,4 +1,16 @@
+/**
+ * Represents a Stopwatch.
+ * @class
+ */
 export default class Stopwatch {
+  /**
+   * Creates an instance of Stopwatch.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context.
+   * @param {number} x - The x-coordinate of the stopwatch position.
+   * @param {number} y - The y-coordinate of the stopwatch position.
+   */
   constructor(canvas, ctx, x, y) {
     this.startTime = 0;
     this.isRunning = false;
@@ -13,6 +25,9 @@ export default class Stopwatch {
     this.draw();
   }
 
+  /**
+   * Starts the stopwatch.
+   */
   start() {
     if (!this.isRunning) {
       this.startTime = Date.now() - this.elapsedTime;
@@ -21,6 +36,9 @@ export default class Stopwatch {
     }
   }
 
+  /**
+   * Stops the stopwatch.
+   */
   stop() {
     if (this.isRunning) {
       this.isRunning = false;
@@ -28,12 +46,18 @@ export default class Stopwatch {
     }
   }
 
+  /**
+   * Resets the stopwatch.
+   */
   reset() {
     this.startTime = Date.now();
     this.elapsedTime = 0;
     this.draw();
   }
 
+  /**
+   * Updates the stopwatch.
+   */
   update() {
     if (this.isRunning) {
       this.elapsedTime = Date.now() - this.startTime;
@@ -42,6 +66,9 @@ export default class Stopwatch {
     }
   }
 
+  /**
+   * Draws the stopwatch on the canvas.
+   */
   draw() {
     const minutes = Math.floor(this.elapsedTime / 60000);
     const seconds = ((this.elapsedTime % 60000) / 1000).toFixed(2);
@@ -54,6 +81,9 @@ export default class Stopwatch {
     );
   }
 
+  /**
+   * Saves the stopwatch data to local storage.
+   */
   saveToLocalStorage() {
     localStorage.setItem(
       "stopwatch",
@@ -65,6 +95,9 @@ export default class Stopwatch {
     );
   }
 
+  /**
+   * Loads the stopwatch data from local storage.
+   */
   loadFromLocalStorage() {
     const data = localStorage.getItem("stopwatch");
     if (data) {
@@ -75,6 +108,10 @@ export default class Stopwatch {
     }
   }
 
+  /**
+   * Gets the elapsed time of the stopwatch.
+   * @returns {number} The elapsed time in milliseconds.
+   */
   getElapsedTime() {
     console.log(this.elapsedTime);
     return this.elapsedTime;

@@ -67,6 +67,9 @@ function sortByScore2(scores) {
       rank += 1;
     }
 
+    if (score.score2 === 10000000000000) {
+      score.score2 = "0";
+    }
     return {
       ...score,
       rankScore2: rank,

@@ -1,4 +1,24 @@
+/**
+ * Represents a MiTrash object.
+ * @class
+ */
 export default class MiTrash {
+  /**
+   * Creates a MiTrash object.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context.
+   * @param {number} gravity - The gravity value.
+   * @param {number} x - The initial x position.
+   * @param {number} y - The initial y position.
+   * @param {Image} image - The image of the MiTrash object.
+   * @param {Object} velocity - The velocity of the MiTrash object.
+   * @param {number} velocity.x - The x velocity.
+   * @param {number} velocity.y - The y velocity.
+   * @param {Object} distance - The distance object.
+   * @param {number} distance.limit - The limit of the distance traveled.
+   * @param {number} distance.traveled - The distance traveled.
+   */
   constructor(
     canvas,
     ctx,
@@ -33,6 +53,9 @@ export default class MiTrash {
     this.frames = 0;
   }
 
+  /**
+   * Draws the MiTrash object on the canvas.
+   */
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -47,6 +70,9 @@ export default class MiTrash {
     );
   }
 
+  /**
+   * Updates the MiTrash object.
+   */
   update() {
     this.frameCount++;
     this.frameDelay = 60 / this.frameRate;

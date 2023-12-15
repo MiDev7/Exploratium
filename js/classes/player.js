@@ -39,12 +39,6 @@ export default class Player {
     this.ctx.globalAlpha = this.opacity;
 
     this.ctx.fillStyle = "rgba(255, 255, 255, 0.2)";
-    this.ctx.fillRect(
-      this.position.x,
-      this.position.y,
-      this.width,
-      this.height
-    );
 
     const powerUp = this.image.Power;
 

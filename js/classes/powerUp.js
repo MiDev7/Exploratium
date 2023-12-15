@@ -1,4 +1,19 @@
+/**
+ * Represents a PowerUp object.
+ * @class
+ */
 export default class PowerUp {
+  /**
+   * Creates a new PowerUp object.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The 2D rendering context.
+   * @param {number} [gravity=0] - The gravity value.
+   * @param {number} x - The x-coordinate of the PowerUp's position.
+   * @param {number} y - The y-coordinate of the PowerUp's position.
+   * @param {Image} image - The image of the PowerUp.
+   * @param {Object} [velocity={ x: 0, y: 0 }] - The velocity of the PowerUp.
+   */
   constructor(
     canvas,
     ctx,
@@ -32,6 +47,9 @@ export default class PowerUp {
     this.frames = 0;
   }
 
+  /**
+   * Draws the PowerUp on the canvas.
+   */
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -46,6 +64,9 @@ export default class PowerUp {
     );
   }
 
+  /**
+   * Updates the PowerUp's position and animation.
+   */
   update() {
     this.frameCount++;
     this.frameDelay = 60 / this.frameRate;

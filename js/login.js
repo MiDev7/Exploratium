@@ -11,7 +11,12 @@ if (storedData) {
     dataArray = parsedData;
   }
 }
-// TODO: Add Comments
+
+/**
+ * Logs in the user and redirects to the home page if the credentials are valid.
+ * If the user is already logged in, it redirects to the home page.
+ * @returns {void}
+ */
 function login() {
   const today = new Date();
   const todayTime = today.getTime();
@@ -36,17 +41,14 @@ function login() {
           const lastLogin = localStorage.getItem("lastLogin");
           if (lastLogin) {
             const lastLoginTime = parseInt(lastLogin);
-            const thirtyDays = 30 * 24 * 60 * 60 * 1000; // 30 days in milliseconds
+            const thirtyDays = 30 * 24 * 60 * 60 * 1000;
             if (todayTime - lastLoginTime >= thirtyDays) {
-              // User needs to sign up again
               localStorage.removeItem("lastLogin");
             } else {
-              // User is still logged in, update last login timestamp
               localStorage.setItem("lastLogin", todayTime.toString());
               window.location.href = "../pages/home.html";
             }
           } else {
-            // First time login, set last login timestamp
             localStorage.setItem("lastLogin", todayTime.toString());
             window.location.href = "../pages/home.html";
           }
