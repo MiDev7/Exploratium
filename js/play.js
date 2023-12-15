@@ -36,6 +36,18 @@ const footer = document.querySelector("footer");
 // !---------------CANVAS SETUP----------------
 const context = canvas.getContext("2d");
 
+const currentUser = sessionStorage.getItem("currentUser");
+
+let currentUserScore = {
+  user: currentUser,
+  score1: "",
+  time1: 10000000000000,
+  score2: "",
+  time2: 10000000000000,
+};
+
+let scores = [];
+
 //* Adjust canvas size to window size
 canvas.width = 1080;
 canvas.height = 720;
@@ -73,6 +85,78 @@ const enemy = loadImage("../assets/SlimeMediumBlue.png");
 
 const blueCrystal = loadImage("../assets/BlueCrystal.png");
 
+let currentLevel = 2;
+
+/**
+ * Compares the current user's score with the existing scores stored in localStorage.
+ * If the current user's score is higher or has better time, it updates the stored score.
+ * If the current user's score is not found, it adds the score to the stored scores.
+ * @param {Object} currentUserScore - The score object of the current user.
+ * @param {number} currentUserScore.score1 - The score for game 1.
+ * @param {number} currentUserScore.score2 - The score for game 2.
+ * @param {number} currentUserScore.time1 - The time taken for game 1.
+ * @param {number} currentUserScore.time2 - The time taken for game 2.
+ * @returns {boolean} - Returns true if the current user's score is higher or has better time, otherwise false.
+ */
+function compareScore(currentUserScore) {
+  const storedScore = localStorage.getItem("scores");
+  const parsedScore = storedScore ? JSON.parse(storedScore) : [];
+
+  console.log(currentUserScore);
+  const existingScore = parsedScore.find((score) => score.user === currentUser);
+  console.log(existingScore);
+  if (existingScore) {
+    if (
+      currentUserScore.score1 > existingScore.score1 ||
+      currentUserScore.score2 > existingScore.score2 ||
+      currentUserScore.time1 < existingScore.time1 ||
+      currentUserScore.time2 < existingScore.time2
+    ) {
+      console.log("true");
+      return true;
+    }
+  } else {
+    scores.push(currentUserScore);
+    localStorage.setItem("scores", JSON.stringify(scores));
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Updates the score for the current user.
+ * If the current user's score is higher than the stored score, it updates the stored score.
+ *
+ * @param {Object} currentUserScore - The score object for the current user.
+ * @param {string} currentUserScore.user - The username of the current user.
+ * @param {number} currentUserScore.score1 - The first score of the current user.
+ * @param {number} currentUserScore.time1 - The time of the first score for the current user.
+ * @param {number} currentUserScore.score2 - The second score of the current user.
+ * @param {number} currentUserScore.time2 - The time of the second score for the current user.
+ */
+function updateScore(currentUserScore) {
+  if (compareScore(currentUserScore)) {
+    const storedScore = localStorage.getItem("scores");
+    const scores = storedScore ? JSON.parse(storedScore) : [];
+
+    const updatedScores = scores.map((score) => {
+      if (score.user === currentUserScore.user) {
+        return {
+          ...score,
+          score1: currentUserScore.score1,
+          time1: currentUserScore.time1,
+          score2: currentUserScore.score2,
+          time2: currentUserScore.time2,
+        };
+      }
+      return score;
+    });
+
+    localStorage.setItem("scores", JSON.stringify(updatedScores));
+  }
+}
+
 // !---------------MAIN FUNCTION----------------
 async function main() {
   // !----------------- GAME LOGIC -----------------
@@ -83,7 +167,7 @@ async function main() {
   const gravity = 4;
   let distance = 0;
 
-  const playerSpeed = 8;
+  const playerSpeed = 10;
   // !----------------- OBJECTS -----------------
   // * Platforms
 
@@ -137,7 +221,7 @@ async function main() {
 
   let hearts = [];
 
-  let timer;
+  let timer = new StopWatch(canvas, context, 900, 100);
 
   let sPoints;
 
@@ -157,7 +241,6 @@ async function main() {
 
     sPoints = 0;
 
-    timer = new StopWatch(canvas, context, 900, 100);
     timer.reset();
 
     life = 3;
@@ -740,7 +823,136 @@ async function main() {
     life = 3;
 
     game.disableUserInput = false;
-    platforms = [];
+    platforms = [
+      new Platform(
+        canvas,
+        context,
+        images.level2.smallBlock,
+        2128,
+        150,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        images.level1.longPlatform.width / 2 + 2945,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        4126,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.smallBlock,
+        6090,
+        150,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        5890 +
+          images.level1.longPlatform.width -
+          images.level2.largeBlock.width,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.smallBlock,
+        9047,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.smallBlock,
+        9347,
+        150,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.smallPlatform,
+        11492,
+        canvas.height - 309,
+        false,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        14000,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        16265,
+        150,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        17137,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        20082 + images.level1.smallPlatform.width + 250,
+        300,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        20082 + images.level1.smallPlatform.width + 750,
+        500,
+        true,
+        false
+      ),
+      new Platform(
+        canvas,
+        context,
+        images.level2.largeBlock,
+        21900,
+        300,
+        true,
+        false
+      ),
+    ];
 
     hearts = [
       new GenericObject(canvas, context, heartImage.full, 900, 10, 50, 50),
@@ -752,7 +964,7 @@ async function main() {
 
     platformDistance = 0;
 
-    endPoint = new GenericObject(canvas, context, house, 24000, 100, 600, 600);
+    endPoint = new GenericObject(canvas, context, house, 23500, 100, 600, 600);
 
     platformsMap.forEach((symbol) => {
       switch (symbol) {
@@ -827,17 +1039,602 @@ async function main() {
       new GenericObject(canvas, context, images.level2.garbage, 25, 10, 50, 50),
     ];
 
-    minions = [];
+    minions = [
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        1080 - 70,
+        0,
+        enemy,
+        {
+          x: -10,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        1080 - 210,
+        0,
+        enemy,
+        {
+          x: -10,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        1080 - 140,
+        0,
+        enemy,
+        {
+          x: -10,
+          y: 0,
+        },
+        { limit: 800, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        2128,
+        0,
+        enemy,
+        {
+          x: -2,
+          y: 0,
+        },
+        { limit: 50, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        9047,
+        0,
+        enemy,
+        {
+          x: -2,
+          y: 0,
+        },
+        { limit: 10, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        1868 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 500, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        1868 + images.level1.smallPlatform.width - 140,
+        100,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 300, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        4026 + images.level1.smallPlatform.width - 140,
+        100,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 800, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        4026 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        4026 + images.level1.smallPlatform.width - 210,
+        100,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 1300, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        4026 + images.level1.smallPlatform.width - 140,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 1400, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5352 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 400, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5352 + images.level1.smallPlatform.width - 140,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 300, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5890 + images.level1.longPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -6,
+          y: 0,
+        },
+        { limit: 200, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5890 + images.level1.longPlatform.width - 170,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5890 + images.level1.longPlatform.width - 70,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5890 + images.level1.longPlatform.width - 210,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        5890 + images.level1.longPlatform.width - 70,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        7221 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 400, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        8547 + images.level1.smallPlatform.width - 70,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 400, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        8547 + images.level1.smallPlatform.width - 70,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        8547 + images.level1.smallPlatform.width - 70,
+        400,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        10166 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 300, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        11492 + images.level1.longPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        13899 + images.level1.longPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        13899 + images.level1.longPlatform.width - 100,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 800, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        15519 + images.level1.smallPlatform.width - 70,
+        100,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 300, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        17137 + images.level1.smallPlatform.width - 170,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        17137 + images.level1.smallPlatform.width - 70,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        17137 + images.level1.smallPlatform.width - 210,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        17137 + images.level1.smallPlatform.width - 370,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        19001 + images.level1.longPlatform.width - 370,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 500, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        19001 + images.level1.longPlatform.width - 70,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 900, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        19001 + images.level1.longPlatform.width - 210,
+        420,
+        enemy,
+        {
+          x: -12,
+          y: 0,
+        },
+        { limit: 700, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        20082 +
+          images.level1.smallPlatform.width +
+          250 +
+          images.level1.smallBlock.width +
+          100,
+        0,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 125, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        20082 +
+          images.level1.smallPlatform.width +
+          750 +
+          images.level1.smallBlock.width +
+          100,
+        0,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 125, traveled: 0 }
+      ),
+      new MiTrash(
+        canvas,
+        context,
+        gravity,
+        21900 + images.level1.smallBlock.width + 100,
+        0,
+        enemy,
+        {
+          x: -8,
+          y: 0,
+        },
+        { limit: 125, traveled: 0 }
+      ),
+    ];
 
-    garbages = [];
+    garbages = [
+      new Garbage(canvas, context, gravity, 2128, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 2300, 100, images.level2.garbage),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        images.level1.longPlatform.width / 2 + 2945 + 100,
+        0,
+        images.level2.garbage
+      ),
+      new Garbage(canvas, context, gravity, 4226, 0, images.level2.garbage),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        6090 + 50,
+        0,
+        images.level2.garbage
+      ),
+      new Garbage(canvas, context, gravity, 5500, 0, images.level2.garbage),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        5890 +
+          images.level1.longPlatform.width -
+          images.level2.largeBlock.width,
+        0,
+        images.level2.garbage
+      ),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        5890 +
+          images.level1.longPlatform.width -
+          images.level2.largeBlock.width,
+        420,
+        images.level2.garbage
+      ),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        16265 + images.level1.smallPlatform.width - 50,
+        100,
+        images.level2.garbage
+      ),
+      new Garbage(canvas, context, gravity, 9047, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 9347, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 11000, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 11600, 450, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 12700, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 14000, 450, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 14000, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 16265, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 17237, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 18600, 0, images.level2.garbage),
+      new Garbage(canvas, context, gravity, 18670, 0, images.level2.garbage),
+      new Garbage(
+        canvas,
+        context,
+        gravity,
+        20082 + images.level1.smallPlatform.width + 750,
+        0,
+        images.level2.garbage
+      ),
+    ];
 
     particles = [];
 
-    powerUps = [];
+    powerUps = [
+      new PowerUp(canvas, context, 0.8, 1531, 0, blueCrystal, {
+        x: 0,
+        y: 0,
+      }),
+      new PowerUp(canvas, context, 0, 9347, 75, blueCrystal, {
+        x: 0,
+        y: 0,
+      }),
+      new PowerUp(canvas, context, 0.8, 17137, 0, blueCrystal, {
+        x: 0,
+        y: 0,
+      }),
+    ];
 
     weapons = [];
   }
+
+  function selectLevel(currentLevel) {
+    switch (currentLevel) {
+      case 1:
+        init();
+        break;
+      case 2:
+        initLevel2();
+        break;
+    }
+  }
   // !----------------- ANIMATION LOOP -----------------
+  /**
+   * Animates the game by updating the positions and states of various game objects.
+   */
   function animate() {
     requestAnimationFrame(animate);
     context.fillStyle = "beige";
@@ -945,9 +1742,9 @@ async function main() {
               }, 1000);
               break;
             } else {
-              timer.stop();
               setTimeout(() => {
-                initLevel2();
+                timer.stop();
+                selectLevel(currentLevel);
               }, 0);
             }
           }
@@ -1144,6 +1941,15 @@ async function main() {
         });
       }
 
+      if (
+        collisionPlatform(player, platform, 1.1, 50) &&
+        !platform.block &&
+        !platform.platformer
+      ) {
+        player.velocity.y = 0;
+        isJumping = false;
+      }
+
       if (blockCollision({ object: player, platform, margin: 0.8 })) {
         player.velocity.y = -player.velocity.y * 0.3;
       }
@@ -1217,15 +2023,27 @@ async function main() {
         increment += 1;
       }, 1000);
 
-      // setTimeout(() => {
-      //   initLevel2();
-      // }, 5000);
+      setTimeout(() => {
+        if (currentLevel === 1) {
+          timer.stop();
+          currentUserScore.score1 = sPoints;
+          currentUserScore.time1 = timer.getElapsedTime();
+        } else {
+          timer.stop();
+          currentUserScore.score2 = sPoints;
+          currentUserScore.time2 = timer.getElapsedTime();
+        }
+        updateScore(currentUserScore);
+        currentLevel = 2;
+        selectLevel(currentLevel);
+      }, 5000);
     }
 
     // * Lose Condition
     if (player.position.y > canvas.height) {
       timer.stop();
-      initLevel2();
+      console.log(currentLevel);
+      selectLevel(currentLevel);
     }
 
     // !----------------- PLAYER MOVEMENT -----------------
@@ -1254,7 +2072,7 @@ async function main() {
       }
     }
   }
-  initLevel2();
+  selectLevel(currentLevel);
   animate();
 
   // !----------------- EVENT LISTENERS -----------------

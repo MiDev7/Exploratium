@@ -31,7 +31,6 @@ export default class Stopwatch {
   reset() {
     this.startTime = Date.now();
     this.elapsedTime = 0;
-    this.saveToLocalStorage();
     this.draw();
   }
 
@@ -74,5 +73,10 @@ export default class Stopwatch {
       this.isRunning = savedData.isRunning || false;
       this.elapsedTime = savedData.elapsedTime || 0;
     }
+  }
+
+  getElapsedTime() {
+    console.log(this.elapsedTime);
+    return this.elapsedTime;
   }
 }
