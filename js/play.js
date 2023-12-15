@@ -85,7 +85,7 @@ const enemy = loadImage("../assets/SlimeMediumBlue.png");
 
 const blueCrystal = loadImage("../assets/BlueCrystal.png");
 
-let currentLevel = 2;
+let currentLevel = 1;
 
 /**
  * Compares the current user's score with the existing scores stored in localStorage.
@@ -152,6 +152,7 @@ function updateScore(currentUserScore) {
       }
       return score;
     });
+    console.log(updatedScores);
 
     localStorage.setItem("scores", JSON.stringify(updatedScores));
   }
@@ -167,7 +168,7 @@ async function main() {
   const gravity = 4;
   let distance = 0;
 
-  const playerSpeed = 10;
+  const playerSpeed = 50;
   // !----------------- OBJECTS -----------------
   // * Platforms
 
@@ -2028,12 +2029,16 @@ async function main() {
           timer.stop();
           currentUserScore.score1 = sPoints;
           currentUserScore.time1 = timer.getElapsedTime();
-        } else {
+        } else if (currentLevel === 2) {
           timer.stop();
           currentUserScore.score2 = sPoints;
           currentUserScore.time2 = timer.getElapsedTime();
+          console.log("new Score");
         }
         updateScore(currentUserScore);
+      }, 0);
+
+      setTimeout(() => {
         currentLevel = 2;
         selectLevel(currentLevel);
       }, 5000);
@@ -2081,11 +2086,11 @@ async function main() {
 
     switch (key) {
       case "ArrowUp":
-        if (!isJumping) {
-          player.velocity.y -= 60;
-          player.state = "jump";
-          isJumping = true;
-        }
+        // if (!isJumping) {
+        player.velocity.y -= 60;
+        player.state = "jump";
+        isJumping = true;
+        // }
         break;
       case "ArrowLeft": //!hello deepika was hereeee <3
         isPressed.left = true;
