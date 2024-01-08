@@ -1,6 +1,20 @@
 import { loadImage } from "../utils/loadImage.js";
 
+/**
+ * Represents a Weapon in the game.
+ * @class
+ */
 export default class Weapon {
+  /**
+   * Creates a new Weapon instance.
+   * @constructor
+   * @param {HTMLCanvasElement} canvas - The canvas element.
+   * @param {CanvasRenderingContext2D} ctx - The rendering context of the canvas.
+   * @param {number} gravity - The gravity value for the weapon.
+   * @param {number} x - The initial x-coordinate of the weapon.
+   * @param {number} y - The initial y-coordinate of the weapon.
+   * @param {number} velocity - The initial velocity of the weapon.
+   */
   constructor(canvas, ctx, gravity, x, y, velocity) {
     this.ctx = ctx;
     this.canvas = canvas;
@@ -20,6 +34,9 @@ export default class Weapon {
     };
   }
 
+  /**
+   * Draws the weapon on the canvas.
+   */
   draw() {
     this.ctx.drawImage(
       this.image,
@@ -30,6 +47,9 @@ export default class Weapon {
     );
   }
 
+  /**
+   * Updates the position and velocity of the weapon.
+   */
   update() {
     this.draw();
     this.position.y += this.velocity.y;

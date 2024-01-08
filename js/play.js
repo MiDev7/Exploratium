@@ -172,7 +172,7 @@ async function main() {
   const gravity = 4;
   let distance = 0;
 
-  const playerSpeed = 8;
+  const playerSpeed = 4;
   // !----------------- OBJECTS -----------------
   // * Platforms
 
